@@ -29,6 +29,17 @@
         </div>
 
         <div class="form-group">
+          <label>category:</label>
+          <select class="form-control" required name='category_id'>
+            @foreach($categories as $category)
+              <option value="{{ $category->id }}" {{ $category->id==$post->category['id']?'selected':'' }}>
+                  {{$category->name}}
+               </option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="form-group">
         <label>Post body:</label> <br>
         <textarea class="form-control"  rows="6" name="body" id="bodydiv" > {{ $post->body }} </textarea>
         <div style="color: red"></div>

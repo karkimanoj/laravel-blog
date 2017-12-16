@@ -22,6 +22,17 @@
 			  </div>
 
 			  <div class="form-group">
+			  	<label>category:</label>
+			  	<select class="form-control" required name='category_id'>
+			  		@foreach($categories as $category)
+			  			<option value="{{ $category->id }}">
+			  			    {{$category->name}}
+			  			 </option>
+			  		@endforeach
+			  	</select>
+			  </div>
+
+			  <div class="form-group">
 				<label>Post body:</label>	<br>
 				<textarea class="form-control"  rows="10" name="body" id="bodydiv" > write post here </textarea>
 				<div style="color: red"></div>

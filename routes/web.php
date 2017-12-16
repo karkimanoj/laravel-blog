@@ -11,6 +11,10 @@
 |
 */
 
+//category crud routes
+
+Route::resource('categories', 'CategoryController', ['except'=>['create']]);
+
 //password resets routes
 Route::get('password/reset',['as'=>'password.request',
  'uses'=>'Auth\ForgotPasswordController@showLinkRequestForm']);
@@ -37,11 +41,13 @@ Route::get('/blog/{slug}',[
 			        ])->where('slug','[\w\d\-\_]+');
 Route::get('blog', ['as'=>'blog.index', 'uses'=>'BlogController@getIndex']);
 
+//post routes
+Route::resource('posts','PostController');
+
+
 //page routes
 Route::get('/contact', 'PagesController@getContact');
 Route::get('/about','PagesController@getAbout');
 Route::get('/', 'PagesController@getIndex');
 
-//post routes
-Route::resource('posts','PostController');
 ?>
