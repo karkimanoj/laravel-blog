@@ -11,8 +11,11 @@
 |
 */
 
-//category crud routes
 
+//tag crud routes
+Route::resource('tags', 'TagController', ['except'=>['create']]);
+
+//category crud routes
 Route::resource('categories', 'CategoryController', ['except'=>['create']]);
 
 //password resets routes
