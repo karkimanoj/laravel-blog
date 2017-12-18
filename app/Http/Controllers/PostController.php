@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Session;
 
 class PostController extends Controller
@@ -35,8 +36,9 @@ class PostController extends Controller
     public function create()
     {   
         $categories=Category::all();
-
-        return view('posts.create', ['categories'=>$categories]);
+        $tags=Tag::all();
+        return view('posts.create', ['categories'=>$categories,
+                                     'tags'=>$tags]);
     }
 
     /**
@@ -47,6 +49,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         //1. validate the data from request
         $this->validate($request, array(
                 'title'=>'required|max:255',
@@ -61,6 +64,10 @@ class PostController extends Controller
         $post->category_id=$request->get('category_id'); //no diff in using get
         $post->body=$request->body;
         $post->save();
+
+        if(isset($post->tag))
+        $post->tags()->sync($request->tags, false);  /* false is used for inserting true is for updating  */
+
 
         Session::flash('success','The blog was successfully posted');
         //3. redirect to another page
@@ -90,8 +97,11 @@ class PostController extends Controller
     {
         $post=Post::find($id);
         $categories=Category::all();
-        return view('posts.edit', ['post'=>$post,
-                                   'categories'=>$categories]);
+         $tags=Tag::all();
+
+        return view('posts.edit', [ 'post'=>$post,
+                                   'categories'=>$categories,
+                                    'tags'=>$tags  ]);
     }
 
     /**
@@ -130,6 +140,12 @@ class PostController extends Controller
         $post->category_id=$request->get('category_id');
         $post->body=$request->body;
         $post->save();
+
+        if(isset($post->tags))
+           $post->tags()->sync($request->tags, true);
+       /* true will delete all tags realated to this post id and replace with the new tags */
+        else
+           $post->tags()->sync(array());
 
         Session::flash('success','well done! The post was succesfully edited');
         return redirect()->route('posts.show', $id);

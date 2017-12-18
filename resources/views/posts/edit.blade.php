@@ -3,6 +3,10 @@
 
 @section('title','|edit post')
 
+@section('stylesheets')
+  <link rel="stylesheet" type="text/css" href="/css/select2.min.css">
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -34,6 +38,17 @@
             @foreach($categories as $category)
               <option value="{{ $category->id }}" {{ $category->id==$post->category['id']?'selected':'' }}>
                   {{$category->name}}
+               </option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>tags:</label>
+          <select class="form-control select2-multiple"  name='tags[]' multiple="multiple">
+            @foreach($tags as $tag)
+              <option value="{{ $tag->id }}">
+                  {{$tag->name}}
                </option>
             @endforeach
           </select>
@@ -78,4 +93,12 @@
 
 @section('scripts')
   <script type="text/javascript" src='/js/create.js'></script>
+  <script type="text/javascript" src='/js/select2.min.js'></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+
+      $('.select2-multiple').select2(); //attaching select2 to .select2-multiple class which is a select field
+      $('.select2-multiple').select2().val({!! json_encode($post->tags()->allRelatedIds()) !!}).trigger('change');
+    });
+  </script>
 @endsection

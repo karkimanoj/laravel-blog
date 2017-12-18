@@ -10,6 +10,12 @@
   <div class="col-md-8">
   	<h1>{{ $post->title }}</h1>
     <p class="lead">{{ $post->body }}</p>
+    <hr>
+    <div class="tags">
+      @foreach($post->tags as $tag)
+        <span class="badge badge-info"> {{ $tag->name }} </span>
+      @endforeach
+    </div>
   </div>
 
   <div class="col-md-4">
@@ -36,8 +42,8 @@
 			    <input type="submit" value="Delete" class="btn btn-danger btn-block">
 			    <input type="hidden" name="_token" value="{{ Session::token() }}">
 			   {{ method_field('DELETE') }}
-			</form>﻿
-            </div>
+			   </form>﻿
+        </div>
   		</div>
 
   		<div class="row">
