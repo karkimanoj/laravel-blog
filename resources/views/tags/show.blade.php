@@ -5,9 +5,16 @@
 @section('content')
 
 <div class="row">
-	
 	<div class="col-md-8">
 		<h1>{{ $tag->name }}<small class="xs"> {{ $tag->posts->count() }} posts </small></h1>
+	</div>
+	<div class="col-md-2 offset-md-2">
+		<form method="POST" action="{{ route('tags.destroy', $tag->id) }}">
+			{{ csrf_field() }}
+			{{ method_field('DELETE') }}
+			<input type="submit" name="delete" value="delete" class="btn btn-danger btn-block">
+			
+		</form>
 	</div>
 </div>
 
