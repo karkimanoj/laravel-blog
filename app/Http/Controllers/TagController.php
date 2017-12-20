@@ -51,7 +51,8 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        //
+        $tag=Tag::find($id);
+        return view('tags.show', ['tag'=>$tag] );
     }
 
     /**
@@ -85,6 +86,9 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag=Tag::find($id);
+        $tag->delete();
+        Session::flash('success','tag deleted successfully');
+        redirect()->route('tags.index');
     }
 }
