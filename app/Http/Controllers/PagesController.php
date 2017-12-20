@@ -1,7 +1,11 @@
 <?php
 
  namespace App\Http\Controllers;
+ use Illuminate\Http\Request;
  use App\Post;
+ use Session;
+ use Mail;
+
 
  class PagesController extends Controller
  {
@@ -30,6 +34,27 @@
  		           ->get();
 
  		return view('pages/welcome',['posts'=>$posts]);
+ 	}
+
+ 	public function postContact(Request $request){
+ 		$this->validate($request, array( 'email'=>'required|email',
+ 										  'subject'=>'required|min:5|max:255',
+ 										   'message'=>'required|min:10|max:300'		
+ 										));
+
+ 		$data=['email'=>$request->email,
+ 				'subject'=>$request->subject,
+ 				'msg'=>$request->message
+ 			   ];
+
+ 		Mail::send('emails.contact', $data, function($message) use ($data){
+ 			$message->from($data['email']);
+ 			$message->to('marshallkarki@gmail.com');
+ 			$message->subject($data['subject']);
+ 		});
+
+ 		Session::flash('success','mail succesfully sent via contact form');
+ 		return redirect('/');
  	}
  }
 
