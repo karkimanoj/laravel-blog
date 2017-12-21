@@ -11,6 +11,8 @@
 |
 */
 
+//comment routes
+Route::post('comments/{post_id}', ['as'=>'comments.store' , 'uses'=>'CommentController@store']);
 
 //tag crud routes
 Route::resource('tags', 'TagController', ['except'=>['create']]);
