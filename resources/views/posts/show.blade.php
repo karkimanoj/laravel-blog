@@ -3,6 +3,10 @@
 
 @section('title','|view post')
 
+@section('stylesheets')
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -55,5 +59,39 @@
   	</div>
   </div>	 	
 </div>
+
+<div class="row">
+    <div class="col-md-8 ">
+      <div class="comment-title top-spacing-30">
+        <h3><img src="/open-iconic/svg/comment-square.svg" width="24px" height="24px"> {{ $post->comments()->count() }} comments</h3>
+      </div>
+      @foreach($post->comments as $comment)
+        <div class="media top-spacing-20">
+
+            <img src="{{ "https://www.gravatar.com/avatar/" . md5(strtolower(trim($comment->email))) . "?s=50&d=monsterid" }}" class=" mr-3 author-image">
+
+            <div class="media-body">
+                <h4 class="mt-0">{{ $comment->name }}</h4>
+
+                <p class="author-time"> {{ date('F nS, Y - g:iA' , strtotime($comment->created_at)) }}</p>
+
+                 <div class="comment-content">
+                     {{ $comment->comment }}
+                 </div>
+
+                 <div class="form-group">
+                     <a href="{{ route('comments.edit', $comment->id) }}" >
+                        <img src="/open-iconic/svg/pencil.svg"  width="20px" height="20px" class="ml-3">
+                      </a>
+                      <a href="{{ route('comments.confirmDelete', $comment->id) }}">
+                        <img src="/open-iconic/svg/delete.svg"  width="20px" height="20px" class="ml-3">
+                      </a>
+                 </div>
+            </div>
+
+        </div>
+      @endforeach
+      </div>
+    </div>
 
 @endsection
