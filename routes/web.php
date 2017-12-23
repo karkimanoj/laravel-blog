@@ -11,6 +11,12 @@
 |
 */
 
+//comment routes
+Route::post('comments/{post_id}', ['as'=>'comments.store' , 'uses'=>'CommentController@store']);
+Route::get('comments/{id}/edit', ['as'=>'comments.edit' , 'uses'=>'CommentController@edit']);
+Route::put('comments/{id}', ['as'=>'comments.update' , 'uses'=>'CommentController@update']);
+Route::get('comments/{id}/confirmDelete', ['as'=>'comments.confirmDelete', 'uses'=>'CommentController@confirmDelete']);
+Route::delete('comments/{id}', ['as'=>'comments.destroy' , 'uses'=>'CommentController@destroy']);
 
 //tag crud routes
 Route::resource('tags', 'TagController', ['except'=>['create']]);
