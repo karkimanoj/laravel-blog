@@ -1,0 +1,21 @@
+.top-spacing-20{margin-top: 20px;}
+
+.top-spacing-30{margin-top: 30px;}
+.author-time {
+	font-size: 11px;
+	font-style: italic;
+	color: #aaa;
+}
+.comment-content {
+	font-size: 16px;
+	line-height: 1.3em;
+}
+
+
+/*.author-image{border: 1px solid black;
+				width:50px; 
+			  height: 50px;
+			  border-radius: 50%;
+			 
+			}*/
+
