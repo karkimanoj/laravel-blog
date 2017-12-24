@@ -14,7 +14,7 @@
 	<div class="col-md-8 offset-md-2">
 		<h2>{{ $post->title }}</h1>
 		<h6> published: {{ date('M i Y', strtotime($post->created_at)) }} </h6>
-		<p>{{ substr($post->body, 0, 300) }} {{ strlen($post->body)>300?'....':'' }}</p>
+		<p>{{ substr(strip_tags($post->body), 0, 300) }} {{ strlen(strip_tags($post->body))>300?'....':'' }}</p>
 		<a href="{{ route('blog.single', $post->slug) }}" class="btn btn-primary">read more</a>
 		<hr>
 	</div>
