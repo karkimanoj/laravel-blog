@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-md-8 offset-md-2">
 			<h1>{{ $post->title }}</h1>
-			<p> {{ $post->body }}</p>
+			<p> {!! $post->body !!}</p>
 			<hr>
 			<strong>Posted in: </strong> {{ $post->category['name']}}
 		</div>

@@ -5,6 +5,12 @@
 
 @section('stylesheets')
   <link rel="stylesheet" type="text/css" href="/css/select2.min.css">
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>
+      tinymce.init({ selector:'textarea',
+              menubar:'false',
+              plugins:'code link' });
+  </script>
 @endsection
 
 @section('content')
