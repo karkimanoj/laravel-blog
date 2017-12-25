@@ -130,9 +130,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { 
-    dd($request);
-         $post=Post::find($id);
+    {  //return redirect()->route('posts.index');
+      //dd($request);
+        $post=Post::find($id);
          /* while editing post , if slug is not changed then it violets the unique index so if is used to solve this problem. bcoz laravel unique validation compares the slug field with all slug column values, which in turn produces error. refer part 25 1/2 from devmarketer youtube channel for this*/
     
         if( $request->input('slug')==$post->slug )
@@ -141,7 +141,7 @@ class PostController extends Controller
                 'title'=>'required|max:255',
                 'slug'=>'required|alpha_dash|min:5|max:255',
                 'category_id'=>'required|integer',
-                'test_image'=>'image',
+                'featured_image'=>'sometimes|image',
                 'body'=>'required'
                  ]);
         }
@@ -151,7 +151,7 @@ class PostController extends Controller
                 'title'=>'required|max:255',
                 'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
                 'category_id'=>'required|integer',
-                'test_image'=>'image',
+                'featured_image'=>'sometimes|image',
                 'body'=>'required'
                  ]);     
          }
@@ -163,8 +163,8 @@ class PostController extends Controller
         $post->category_id=$request->get('category_id');
         $post->body=$request->body;
  //echo 'yesyesyesyesyesyesyesyesyesyesyes';
-         if($request->hasfile('test_image')){
-                //echo 'yesyesyesyesyesyesyesyesyesyesyes';
+         if($request->hasfile('featured_image')){
+                //echo 'hasyesyesyesyesyesyesyesyesyesyesyes';
             $image=$request->file('featured_image');
             $filename=time().'.'.$image->getClientOriginalExtension();
             $location=public_path('images\\'.$filename);
@@ -178,13 +178,13 @@ class PostController extends Controller
         $post->save();
 
         if(isset($post->tags))
-           $post->tags()->sync($request->tags, true);
+          $post->tags()->sync($request->tags, true);
        /* true will delete all tags realated to this post id and replace with the new tags */
-        else
-           $post->tags()->sync(array());
+       else
+          $post->tags()->sync(array());
 
-        //Session::flash('success','well done! The post was succesfully edited');
-        //return redirect()->route('posts.show', [$post->id]);
+       Session::flash('success','well done! The post was succesfully edited');
+        return redirect()->route('posts.show', [$post->id]);
        
     }
 

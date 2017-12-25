@@ -23,7 +23,7 @@
 </div>
 
  <div class="row">
- <form enctype="multipart/form-data" action="{{route('posts.update',[$post->id])}}" style="width: 100%">
+ <form method="POST" enctype="multipart/form-data" action="{{route('posts.update',[$post->id])}}" style="width: 100%">
   <div class="col-md-8">
    
         <div class="form-group">
@@ -67,12 +67,7 @@
           <div style="color: red"></div>
         </div>
 
-          <div class="form-group">
-          <label>test-image:</label> <br>
-          <input type="file" name="test_image" class="form-control"  >
-          <div style="color: red"></div>
-        </div>
-
+          
         <div class="form-group">
           <label>Post body:</label> <br>
           <textarea class="form-control"  rows="6" name="body" id="bodydiv" > {{ $post->body }} </textarea>
