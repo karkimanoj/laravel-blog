@@ -7,6 +7,8 @@ use App\Post;
 use App\Category;
 use App\Tag;
 use Session;
+use Image;
+use Storage;
 
 class PostController extends Controller
 {
@@ -55,6 +57,7 @@ class PostController extends Controller
                 'title'=>'required|max:255',
                 'slug'=>'required|min:5|max:255|alpha_dash|unique:posts,slug',
                 'category_id'=>'required|integer',
+                'featured_image'=>'sometimes|image',
                 'body'=>'required'
             ));
         //2. store the data
@@ -63,6 +66,20 @@ class PostController extends Controller
         $post->slug=$request->slug;
         $post->category_id=$request->get('category_id'); //no diff in using get
         $post->body=$request->body;
+
+        //save image
+        if($request->hasfile('featured_image')){
+
+            $image=$request->file('featured_image');
+            $ext=$image->extension();
+            $filename=time().'.'.$ext;
+            $location=public_path('images\\'.$filename);
+            Image::make($image)->resize(400,200)->save($location);
+
+            $post->image=$filename;
+        }
+
+
         $post->save();
 
         if(isset($post->tag))
@@ -72,6 +89,7 @@ class PostController extends Controller
         Session::flash('success','The blog was successfully posted');
         //3. redirect to another page
         return redirect()->route('posts.show', $post->id);
+    
     }
 
     /**
@@ -98,7 +116,7 @@ class PostController extends Controller
         $post=Post::find($id);
         $categories=Category::all();
          $tags=Tag::all();
-
+         
         return view('posts.edit', [ 'post'=>$post,
                                    'categories'=>$categories,
                                     'tags'=>$tags  ]);
@@ -112,15 +130,18 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    { 
+    dd($request);
          $post=Post::find($id);
          /* while editing post , if slug is not changed then it violets the unique index so if is used to solve this problem. bcoz laravel unique validation compares the slug field with all slug column values, which in turn produces error. refer part 25 1/2 from devmarketer youtube channel for this*/
+    
         if( $request->input('slug')==$post->slug )
         {
             $this->validate($request, [
                 'title'=>'required|max:255',
                 'slug'=>'required|alpha_dash|min:5|max:255',
                 'category_id'=>'required|integer',
+                'test_image'=>'image',
                 'body'=>'required'
                  ]);
         }
@@ -130,15 +151,30 @@ class PostController extends Controller
                 'title'=>'required|max:255',
                 'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
                 'category_id'=>'required|integer',
+                'test_image'=>'image',
                 'body'=>'required'
                  ]);     
          }
+         
 
         
         $post->title=$request->title;
         $post->slug=$request->slug;
         $post->category_id=$request->get('category_id');
         $post->body=$request->body;
+ //echo 'yesyesyesyesyesyesyesyesyesyesyes';
+         if($request->hasfile('test_image')){
+                //echo 'yesyesyesyesyesyesyesyesyesyesyes';
+            $image=$request->file('featured_image');
+            $filename=time().'.'.$image->getClientOriginalExtension();
+            $location=public_path('images\\'.$filename);
+            Image::make($image)->resize(400,200)->save($location);
+
+            $old_filename=$post->image;
+            $post->image=$filename;
+            Storage::delete($old_filename);
+        }
+
         $post->save();
 
         if(isset($post->tags))
@@ -147,8 +183,9 @@ class PostController extends Controller
         else
            $post->tags()->sync(array());
 
-        Session::flash('success','well done! The post was succesfully edited');
-        return redirect()->route('posts.show', $id);
+        //Session::flash('success','well done! The post was succesfully edited');
+        //return redirect()->route('posts.show', [$post->id]);
+       
     }
 
     /**
@@ -161,6 +198,7 @@ class PostController extends Controller
     {
         $post=Post::find($id);
         $post->tags()->detach();
+        Storage::delete($post->image);
         $post->delete();
         Session::flash('success','The post was successfully deleted');
         return redirect()->route('posts.index');

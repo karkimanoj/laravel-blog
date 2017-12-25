@@ -18,7 +18,7 @@
 		  <h2>create a new post</h2>	
 		  <hr>
 
-		  <form method="POST" action="{{route('posts.store')}}">
+		  <form method="POST" action="{{route('posts.store')}}" enctype="multipart/form-data">
 			  <div class="form-group">
 				<label>Title:</label>	<br>
 				<input type="text" name="title" class="form-control" id="titlediv" >
@@ -51,6 +51,12 @@
 			  			 </option>
 			  		@endforeach
 			  	</select>
+			  </div>
+
+			  <div class="form-group">
+				<label>image:</label>	<br>
+				<input type="file" name="featured_image" class="form-control"  >
+				<div style="color: red"></div>
 			  </div>
 
 			  <div class="form-group">

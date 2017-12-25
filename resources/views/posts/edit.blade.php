@@ -23,7 +23,7 @@
 </div>
 
  <div class="row">
- <form method="POST" action="{{route('posts.update',[$post->id])}}" style="width: 100%">
+ <form enctype="multipart/form-data" action="{{route('posts.update',[$post->id])}}" style="width: 100%">
   <div class="col-md-8">
    
         <div class="form-group">
@@ -60,10 +60,23 @@
           </select>
         </div>
 
+
         <div class="form-group">
-        <label>Post body:</label> <br>
-        <textarea class="form-control"  rows="6" name="body" id="bodydiv" > {{ $post->body }} </textarea>
-        <div style="color: red"></div>
+          <label>image:</label> <br>
+          <input type="file" name="featured_image" class="form-control"  >
+          <div style="color: red"></div>
+        </div>
+
+          <div class="form-group">
+          <label>test-image:</label> <br>
+          <input type="file" name="test_image" class="form-control"  >
+          <div style="color: red"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Post body:</label> <br>
+          <textarea class="form-control"  rows="6" name="body" id="bodydiv" > {{ $post->body }} </textarea>
+          <div style="color: red"></div>
         </div>
 
           {{csrf_field()}}
@@ -105,6 +118,7 @@
 
       $('.select2-multiple').select2(); //attaching select2 to .select2-multiple class which is a select field
       $('.select2-multiple').select2().val({!! json_encode($post->tags()->allRelatedIds()) !!}).trigger('change');
+
     });
   </script>
 @endsection

@@ -31,7 +31,7 @@
 	  	 	  <tr>
 			 	<td>{{ $post->id }}</td>
 			 	<td>{{ $post->title }}</td>
-			 	<td>{{ substr($post->body,0,50) }} <span style="color: blue"> {{ strlen($post->body)>50?'....':'' }} </span></td>
+			 	<td>{{ substr(strip_tags($post->body),0,50) }} <span style="color: blue"> {{ strlen(strip_tags($post->body))>50?'....':'' }} </span></td>
 			 	<td>{{ $post->created_at }}</td>
 			 	<td><a href="{{ route('posts.show',[$post->id]) }}" class="btn btn-default btn-sm">view</a>
 			 	<a href="{{ route('posts.edit',[$post->id]) }}" class="btn btn-default btn-sm">edit</a> </td>
