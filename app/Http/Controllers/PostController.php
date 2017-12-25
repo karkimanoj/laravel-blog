@@ -130,8 +130,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {  //return redirect()->route('posts.index');
-      //dd($request);
+    {  
         $post=Post::find($id);
          /* while editing post , if slug is not changed then it violets the unique index so if is used to solve this problem. bcoz laravel unique validation compares the slug field with all slug column values, which in turn produces error. refer part 25 1/2 from devmarketer youtube channel for this*/
     
